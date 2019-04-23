@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>代理模式预加载图片</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    class MyImg {
+        constructor() {
+            this.img = document.createElement('img')
+            document.body.appendChild(this.img)
+        }
+        loadImg(src) {
+            this.img.src = src
+        }
+    }
+    class ProxyImg {
+        constructor() {
+            this.myImg = new MyImg()
+            this.targets = null
+        }
+        loadImg(targetSrc) {
+            let loading = './react.gif'
+            this.myImg.loadImg(loading)
+            let img = new Image()
+            setTimeout(() => {
+                img.src = targetSrc
+                this.targets = img.src
+                console.log(this.targets)
+            }, 3000);
+            img.onload = () => {
+                this.myImg.loadImg(this.targets)
+            }
+        }
+    }
+    let proxyImg = new ProxyImg()
+    let targetSrc = './react.jpg'
+    proxyImg.loadImg(targetSrc)
+</script>
+
+</html>
