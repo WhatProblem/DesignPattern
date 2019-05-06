@@ -7,3 +7,5 @@
 [迭代器模式](https://github.com/WhatProblem/DesignPattern/tree/master/iterator)<br/>
 [命令模式](https://github.com/WhatProblem/DesignPattern/tree/master/command)<br/>
 [组合模式](https://github.com/WhatProblem/DesignPattern/tree/master/combine)<br/>
+[模板方法模式](https://github.com/WhatProblem/DesignPattern/tree/master/template)<br/>
+[享元模式](https://github.com/WhatProblem/DesignPattern/tree/master/share)<br/>
