@@ -44,7 +44,7 @@ for (var j = 1; j <= 50; j++) {
 
 
 
-
+/* 
 // 案例3：文件上传案例--传统方式，创建多个对象
 var id = 0
 window.startUpload = function (uploadType, files) { // uploadType--区分上传类型：Flash/控件
@@ -108,3 +108,162 @@ startUpload('flash', [
         fileSize: 5000
     }
 ])
+ */
+
+
+
+/* 
+// 案例4：文件上传优化
+var Upload = function (uploadType) {
+    this.uploadType = uploadType
+}
+Upload.prototype.deFile = function (id) {
+    uploadManager.setExternalState(id, this)
+    if (this.fileSize < 3000) {
+        return this.dom.parentNode.removeChild(this.dom)
+    }
+    if (window.confirm('确定删除该文件吗？' + this.fileName)) {
+        return this.dom.parentNode.removeChild(this.dom)
+    }
+}
+// 定义工厂创建upload对象
+var UploadFactory = (function () {
+    var createdFlyWeightObjs = {}
+    return {
+        create: function (uploadType) {
+            if (createdFlyWeightObjs[uploadType]) {
+                return createdFlyWeightObjs[uploadType]
+            }
+            return createdFlyWeightObjs[uploadType] = new Upload(uploadType)
+        }
+    }
+})()
+// 管理器封装外部状态
+var uploadManager = (function () {
+    var uploadDatabase = {}
+    return {
+        add: function (id, uploadType, fileName, fileSize) {
+            var flyWeightObj = UploadFactory.create(uploadType)
+            var dom = document.createElement('div')
+            dom.innerHTML = '<span>文件名称:' + fileName + ', 文件大小: ' + fileSize + '</span>' +
+                '<button class="delFile">删除</button>'
+            dom.querySelector('.delFile').onclick = function () {
+                flyWeightObj.deFile(id)
+            }
+            document.body.appendChild(dom)
+            uploadDatabase[id] = {
+                fileName: fileName,
+                fileSize: fileSize,
+                dom: dom
+            }
+            return flyWeightObj
+        },
+        setExternalState: function (id, flyWeightObj) {
+            var uploadData = uploadDatabase[id]
+            for (var i in uploadData) {
+                flyWeightObj[i] = uploadData[i]
+            }
+        }
+    }
+})()
+// 触发上传动作的startUpload函数
+var id = 0
+window.startUpload = function (uploadType, files) {
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i]
+        var uploadObj = uploadManager.add(++id, uploadType, file.fileName, file.fileSize)
+    }
+}
+// 测试上传
+startUpload('plugin', [
+    {
+        fileName: '1.txt',
+        fileSize: 1000
+    },
+    {
+        fileName: '2.html',
+        fileSize: 3000
+    },
+    {
+        fileName: '3.txt',
+        fileSize: 5000
+    }
+])
+ */
+
+
+
+/* 
+// 案例5：对象池实现--类似享元模式思想
+var toolTipFactory = (function () {
+    var toolTipPool = [] // toolTip对象池
+    return {
+        create: function () {
+            if (toolTipPool.length === 0) { // 对象池为空
+                var div = document.createElement('div') // 创建一个dom
+                document.body.appendChild(div)
+                return div
+            } else {
+                return toolTipPool.shift() // 从对象池取出一个Dom
+            }
+        },
+        recover: function (toolTipDom) {
+            return toolTipPool.push(toolTipDom)
+        }
+    }
+})()
+
+var ary = [], str = ['A', 'B']
+for (var i = 0; i < str.length; i++) {
+    var toolTip = toolTipFactory.create()
+    toolTip.innerHTML = str[i]
+    ary.push(toolTip)
+}
+// 首先回收两个气泡对象到对象池
+for (var j = 0; j < ary.length; j++) {
+    toolTipFactory.recover(ary[j])
+}
+// 再创建6个小气泡
+var str = ['A', 'B', 'C', 'D', 'E', 'F']
+for (var i = 0; i < str.length; i++) {
+    var toolTip = toolTipFactory.create()
+    toolTip.innerHTML = str[i]
+}
+ */
+
+
+
+/* 
+// 案例6：通用对象实现
+var objectPoolFactory = function (createObjFn) {
+    var objectPool = []
+    return {
+        create: function () {
+            var obj = objectPool.length === 0 ?
+                createObjFn.apply(this, arguments) : objectPool.shift()
+            return obj
+        },
+        recover: function (obj) {
+            objectPool.push(obj)
+        }
+    }
+}
+// 创建一个装载一些iframe的对象池
+var iframeFactory = objectPoolFactory(function () {
+    var iframe = document.createElement('iframe')
+    document.body.appendChild(iframe)
+    iframe.onload = function () {
+        iframe.onload = null // 防止iframe重复加载
+        iframeFactory.recover(iframe) // iframe加载完成之后收回节点
+    }
+    return iframe
+})
+var iframe1 = iframeFactory.create()
+iframe1.src = 'http://baidu.com'
+var iframe2 = iframeFactory.create()
+iframe2.src = 'http://www.whatproblem.xyz'
+// setTimeout(function(){
+var iframe3 = iframeFactory.create()
+iframe3.src = 'http://163.com'
+// }, 3000);
+ */
