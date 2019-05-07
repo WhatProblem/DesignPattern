@@ -10,3 +10,4 @@
 [模板方法模式](https://github.com/WhatProblem/DesignPattern/tree/master/template)<br/>
 [享元模式](https://github.com/WhatProblem/DesignPattern/tree/master/share)<br/>
 [职责链模式](https://github.com/WhatProblem/DesignPattern/tree/master/duty)<br/>
+[中介者模式](https://github.com/WhatProblem/DesignPattern/tree/master/mediator)<br/>
