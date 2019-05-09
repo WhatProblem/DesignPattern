@@ -13,3 +13,4 @@
 [中介者模式](https://github.com/WhatProblem/DesignPattern/tree/master/mediator)<br/>
 [装饰者模式](https://github.com/WhatProblem/DesignPattern/tree/master/decorate)<br/>
 [状态模式](https://github.com/WhatProblem/DesignPattern/tree/master/state)<br/>
+[适配器模式](https://github.com/WhatProblem/DesignPattern/tree/master/adapter)<br/>
