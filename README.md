@@ -14,3 +14,5 @@
 [装饰者模式](https://github.com/WhatProblem/DesignPattern/tree/master/decorate)<br/>
 [状态模式](https://github.com/WhatProblem/DesignPattern/tree/master/state)<br/>
 [适配器模式](https://github.com/WhatProblem/DesignPattern/tree/master/adapter)<br/>
+[工厂模式模式](https://github.com/WhatProblem/DesignPattern/tree/master/factory)<br/>
+[外观模式](https://github.com/WhatProblem/DesignPattern/tree/master/appearance)<br/>
