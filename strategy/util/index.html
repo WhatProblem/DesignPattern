@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <form id="registerForm" onclick="return false">
+        <label for="userName">请输入用户名<input type="text" id="userName" name="userName"></label><br />
+        <label for="password">请输入密码<input type="text" id="password" name="password"></label><br />
+        <label for="phoneNumber">请输入手机号<input type="text" id="phoneNumber" name="phoneNumber"></label><br />
+        <button id="submit">提交</button>
+    </form>
+</body>
+<script src="./strategies.js"></script>
+<!-- <script>
+// 单个判断条件
+let registerForm = document.querySelector('#registerForm')
+let submit = document.querySelector('#submit')
+submit.onclick = function() {
+const validator = new Validator()
+// console.log(registerForm.userName.value)
+// console.log('提交')
+validator.add(registerForm.userName, 'isNonEmpty','用户名不能为空')
+validator.add(registerForm.password, 'minLength:6','密码不能少于6位')
+validator.add(registerForm.phoneNumber, 'isMobile','手机号输入有误')
+const errMsg = validator.start()
+if (errMsg) {
+// console.log(errMsg)
+alert(errMsg)
+return
+}
+}
+</script> -->
+<script>
+    // 多个判断条件
+    let registerForm = document.querySelector('#registerForm')
+    let submit = document.querySelector('#submit')
+    submit.onclick = function () {
+        const validator = new Validator()
+        validator.addMore(registerForm.userName, [
+            {
+                strategy: 'isNonEmpty',
+                errorMsg: '用户名不能为空'
+            },
+            {
+                strategy: 'minLength:10',
+                errorMsg: '最小长度不能小于10位'
+            }
+        ])
+        validator.addMore(registerForm.password, [
+            {
+                strategy: 'minLength:6',
+                errorMsg: '密码长度不能小于6位'
+            }
+        ])
+        validator.addMore(registerForm.phoneNumber, [
+            {
+                strategy: 'isMobile',
+                errorMsg: '手机号格式不正确'
+            }
+        ])
+        const errorMsg = validator.start()
+        if (errorMsg) {
+            alert(errorMsg)
+            return
+        }
+    }
+</script>
+
+</html>
